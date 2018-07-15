@@ -4,11 +4,11 @@ Deep Learning using Python and Tensorflow
 <b>What is this repository for?</b>
 This repository demonstrates various neural network techniques using python and tensor flow
 
-How do I get set up? 
+<b>How do I get set up?</b>
 The repository needs to be cloned or pulled into Python Environment
 
-Contribution guidelines 
+<b>Contribution guidelines</b>
 None as of now
 
-Who do I talk to? 
+<b>Who do I talk to?</b>
 Suvo.Bhattacharya@gmail.com
