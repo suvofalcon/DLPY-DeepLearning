@@ -1,7 +1,7 @@
 # DLPY-TensorFlow
 Deep Learning using Python and Tensorflow
 
-What is this repository for? 
+<b>What is this repository for?</b>
 This repository demonstrates various neural network techniques using python and tensor flow
 
 How do I get set up? 
