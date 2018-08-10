@@ -101,7 +101,7 @@ pageBlocks_train.groupby('CLASS').describe()['AREA']
 sns.barplot(x='CLASS',y='AREA',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='AREA',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='AREA',data=pageBlocks_train)
-# Distribution of LENGTH by CLASS
+# Distribution of AREA by CLASS
 featureDistributuionByResponse('AREA','CLASS')
 
 # Explore relationship with ECCEN
@@ -117,7 +117,7 @@ pageBlocks_train.groupby('CLASS').describe()['P_BLACK']
 sns.barplot(x='CLASS',y='P_BLACK',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='P_BLACK',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='P_BLACK',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of P_BLACK by CLASS
 featureDistributuionByResponse('P_BLACK','CLASS')
 
 # Explore relationship with P_AND
@@ -125,7 +125,7 @@ pageBlocks_train.groupby('CLASS').describe()['P_AND']
 sns.barplot(x='CLASS',y='P_AND',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='P_AND',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='P_AND',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of P_AND by CLASS
 featureDistributuionByResponse('P_AND','CLASS')
 
 # Explore relationship with MEAN_TR
@@ -133,7 +133,7 @@ pageBlocks_train.groupby('CLASS').describe()['MEAN_TR']
 sns.barplot(x='CLASS',y='MEAN_TR',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='MEAN_TR',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='MEAN_TR',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of MEAN_TR by CLASS
 featureDistributuionByResponse('MEAN_TR','CLASS')
 
 # Explore relationship with BLACKPIX
@@ -141,7 +141,7 @@ pageBlocks_train.groupby('CLASS').describe()['BLACKPIX']
 sns.barplot(x='CLASS',y='BLACKPIX',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='BLACKPIX',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='BLACKPIX',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of BLACKPIX by CLASS
 featureDistributuionByResponse('BLACKPIX','CLASS')
 
 # Explore relationship with BLACKAND
@@ -149,7 +149,7 @@ pageBlocks_train.groupby('CLASS').describe()['BLACKAND']
 sns.barplot(x='CLASS',y='BLACKAND',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='BLACKAND',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='BLACKAND',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of BLACKAND by CLASS
 featureDistributuionByResponse('BLACKAND','CLASS')
 
 # Explore relationship with WB_TRANS
@@ -157,5 +157,5 @@ pageBlocks_train.groupby('CLASS').describe()['WB_TRANS']
 sns.barplot(x='CLASS',y='WB_TRANS',data=pageBlocks_train)
 sns.stripplot(x='CLASS',y='WB_TRANS',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='WB_TRANS',data=pageBlocks_train)
-# Distribution of ECCEN by CLASS
+# Distribution of WB_TRANS by CLASS
 featureDistributuionByResponse('WB_TRANS','CLASS')
