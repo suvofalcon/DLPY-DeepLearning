@@ -159,3 +159,25 @@ sns.stripplot(x='CLASS',y='WB_TRANS',data=pageBlocks_train,jitter=True)
 sns.boxplot(x='CLASS',y='WB_TRANS',data=pageBlocks_train)
 # Distribution of WB_TRANS by CLASS
 featureDistributuionByResponse('WB_TRANS','CLASS')
+
+'''
+Neural Network Modelling
+'''
+# Isolate the features and response variable
+X = pageBlocks_train.drop(columns='CLASS',axis = 1)
+y = pageBlocks_train['CLASS']
+
+# Let us standardize the feature dataframe
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(X)
+X = scaler.transform(X)
+
+# Divide this into train and test split
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.30, random_state=101)
+
+# One hot encoding of the target variable, because it is a multi class classification
+from keras.utils import np_utils
+encodedY = np_utils.to_categorical(y_train)
+encodedY
