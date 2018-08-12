@@ -51,6 +51,9 @@ pageBlocks_train.head()
 # categories of the response variable
 pageBlocks_train['CLASS'].unique()
 
+# The response variable currently integer has to converted as category
+#pageBlocks_train['CLASS'] = pageBlocks_train['CLASS'].astype('category')
+
 
 '''
 Now we perform exploratory data analysis
@@ -177,7 +180,155 @@ X = scaler.transform(X)
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.30, random_state=101)
 
-# One hot encoding of the target variable, because it is a multi class classification
+# One hot encoding of the target variable in train and test, because it is a multi class classification
+from sklearn.preprocessing import LabelEncoder
 from keras.utils import np_utils
-encodedY = np_utils.to_categorical(y_train)
-encodedY
+encoder = LabelEncoder()
+encoder.fit(y_train)
+encoder.fit(y_test)
+encodedY = encoder.transform(y_train)
+encodedY_test = encoder.transform(y_test)
+encodedY = np_utils.to_categorical(encodedY)
+encodedY_test = np_utils.to_categorical(encodedY_test)
+
+# Now we illustrate a relatively simple grid search for two hyperparameters
+numHiddenLayers = [1,2]
+epochs = [10,25,50,100]
+
+import itertools
+grid2D = [element for element in itertools.product(numHiddenLayers,epochs)]
+print(grid2D)
+
+'''
+The objective now is to train different neural nets as per the combinations in the
+grid2D and to gather accuracies for the corresponding models on the testing split
+
+Based on the results we will make our final selection
+'''
+
+# Build various model based on different hyperparameter
+from keras.models import Sequential
+from keras.layers import Dense, Activation
+
+inputDim = X_train.shape[1]
+
+# create a model with one hidden layer
+# initialize an empty model
+model1Hidden = Sequential()
+# add first hidden layer
+model1Hidden.add(Dense(input_dim = inputDim, activation = 'sigmoid', units = int(inputDim/2),
+                       kernel_initializer = 'uniform', use_bias = True))
+
+# add output layer
+model1Hidden.add(Dense(units = pageBlocks_train['CLASS'].nunique(), kernel_initializer = 'uniform', use_bias = True,
+                       activation = 'sigmoid'))
+
+# Create a model with two hidden layers
+# initialize an empty model
+model2Hidden = Sequential()
+
+# add first hidden layer
+model2Hidden.add(Dense(input_dim = inputDim, activation = 'sigmoid', units = int(inputDim/2),
+                       kernel_initializer = 'uniform', use_bias = True))
+# add the second hidden layer
+model2Hidden.add(Dense(int(inputDim/2), kernel_initializer = 'uniform', use_bias = True,
+                       activation = 'sigmoid'))
+# add the output layer
+model2Hidden.add(Dense(units = pageBlocks_train['CLASS'].nunique(), kernel_initializer = 'uniform', use_bias = True,
+                       activation = 'sigmoid'))
+
+# Now we will compile both the models
+model1Hidden.compile(loss = 'categorical_crossentropy', optimizer = 'adam', 
+              metrics = ['accuracy'])
+model2Hidden.compile(loss = 'categorical_crossentropy', optimizer = 'adam', 
+              metrics = ['accuracy'])
+
+# View the summary for each of the models]
+print("\n")
+print("Model-1 Summary - With one hidden layer")
+model1Hidden.summary()
+print("\n")
+print("Model-2 Summary - With two hidden layers")
+model2Hidden.summary()
+
+# Now we will run the two models, for each of the six combinations
+import datetime
+accuracyList = []
+start = datetime.datetime.now()
+print('The training begins : ',start)
+for eachCombination in grid2D:
+    print("For Combination",eachCombination)
+    if eachCombination[0] == 1:
+        #train the model with 1 hidden layer
+        model1Hidden.fit(X_train, encodedY,
+                         epochs = eachCombination[1],
+                         batch_size = 10)
+        accuracyList.append(model1Hidden.evaluate(X_test,encodedY_test))
+        
+    else:
+        model2Hidden.fit(X_train, encodedY, epochs = eachCombination[1],
+                         batch_size = 10)
+        accuracyList.append(model2Hidden.evaluate(X_test,encodedY_test))
+
+print(list(zip(grid2D, accuracyList))) 
+end = datetime.datetime.now()
+print("The time taken for training the model is :",(end - start))
+
+# From the accuracy list we see that model with 1 hidden layer and epoch = 100 gives the highest accuracy and lowest
+# loss parameter
+
+# we will then build the final model from these parameters and run it on the evaluation test
+
+modelFinal = Sequential()
+modelFinal.add(Dense(input_dim = inputDim, activation = 'sigmoid', units = int(inputDim/2),
+                kernel_initializer = 'uniform', use_bias = True))
+modelFinal.add(Dense(units = pageBlocks_train['CLASS'].nunique(), kernel_initializer = 'uniform', 
+                use_bias = True, activation = 'sigmoid'))
+# view the summary
+modelFinal.summary()
+
+# Now we will have to compile the model, we created
+modelFinal.compile(loss = 'categorical_crossentropy', optimizer = 'adam', 
+              metrics = ['accuracy'])
+# Since we are using a binary classifier, we change our cost function to binary crossentropy.
+# It is also called the Log loss function
+
+# Now we will train the model
+import datetime
+start = datetime.datetime.now()
+print('The training begins : ',start)
+modelFinal.fit(X_train, encodedY, epochs = 100, batch_size = 10)
+end = datetime.datetime.now()
+print("The time taken for training the model is :",(end - start))
+
+# Now we will use the model to evaluate on test dataset
+modelFinal.evaluate(X_test, encodedY_test)
+
+# We will use this model to evaluate on the evaluation dataset
+
+# load the eval dataset
+pageBlocks_eval = pd.read_csv('//Volumes/Data/CodeMagic/Data Files/Jigsaw/page-blocks_test.csv')
+# categories of the response variable
+pageBlocks_eval['CLASS'].unique()
+
+# Isolate the features and response variable
+X_eval = pageBlocks_eval.drop(columns='CLASS',axis = 1)
+y_eval = pageBlocks_eval['CLASS']
+
+# Let us standardize the feature dataframe
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(X_eval)
+X_eval = scaler.transform(X_eval)
+
+# One hot encoding of the target variable in eval dataset
+encoder = LabelEncoder()
+encoder.fit(y_eval)
+encodedY_eval = encoder.transform(y_eval)
+encodedY_eval = np_utils.to_categorical(encodedY_eval)
+
+# Run the predictions on the eval dataset
+predictionsY_eval = modelFinal.predict_classes(X_eval)
+
+# Evaluate the final model on the Evaluation dataset
+modelFinal.evaluate(X_eval, encodedY_eval)
