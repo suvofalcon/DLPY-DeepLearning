@@ -93,6 +93,7 @@ print(y_label)
 # now we will plot
 import matplotlib.pyplot as plt
 plt.plot(x_data,y_label,'*')
+plt.show()
 
 # We can see some linear trend with noise, we will try to model this with a neural network
 # we will solve y = mx + b
@@ -134,3 +135,4 @@ x_test = np.linspace(0,10,10)
 y_pred_plot = final_slope*x_test + final_intercept
 plt.plot(x_test,y_pred_plot,'r')
 plt.plot(x_data,y_label,'*')
+plt.show()
