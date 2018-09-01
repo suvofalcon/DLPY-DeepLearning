@@ -58,6 +58,12 @@ with tf.Session() as sess:
     
 # Now we will show matrix multiplication with tensorflow
 
+'''
+The number of columns of the 1st matrix must equal the number of rows of the 2nd matrix.
+And the result will have the same number of rows as the 1st matrix, and the same number of columns as 
+the 2nd matrix.
+'''
+
 import numpy as np
 
 a = np.array([[5.0,5.0]]) # 1 X 2 matrix
