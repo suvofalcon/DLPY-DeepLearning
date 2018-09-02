@@ -145,7 +145,8 @@ for pred in estimator.predict(input_fn=input_fn_pred):
     predictions.append(pred['predictions'])
 
 # Check the predictions
-predictions
+print("The predictions are :")
+print(predictions)
 
 my_data.sample(n=250).plot(kind='scatter',x='X Data',y='Y')
 plt.plot(brand_new_data,predictions,'r')
