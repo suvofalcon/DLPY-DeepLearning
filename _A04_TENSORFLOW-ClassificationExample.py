@@ -66,7 +66,8 @@ age = tf.feature_column.numeric_column('Age')
 
 # Feature columns building for categorical attributes
 '''
-If you know the set of all possible feature values of a column and there are only a few of them, you can use categorical_column_with_vocabulary_list.
+If you know the set of all possible feature values of a column and there are only a few of them, you can use 
+categorical_column_with_vocabulary_list.
 If you don't know the set of possible values in advance you can use categorical_column_with_hash_bucket
 '''
 assigned_group = tf.feature_column.categorical_column_with_vocabulary_list('Group',['A','B','C','D'])
