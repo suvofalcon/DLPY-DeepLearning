@@ -100,8 +100,8 @@ x_train, x_test, y_train, y_test = train_test_split(x_data,y_true,
         test_size=0.3, random_state=101)
 
 # Check the shape of the splits
-x_train.shape
-x_test.shape
+print(x_train.shape)
+print(x_test.shape)
 
 # define the input function for the neural network
 input_func = tf.estimator.inputs.numpy_input_fn({'x':x_train},y_train,batch_size=10,
@@ -148,5 +148,5 @@ for pred in estimator.predict(input_fn=input_fn_pred):
 predictions
 
 my_data.sample(n=250).plot(kind='scatter',x='X Data',y='Y')
-plt.plot(brand_new_data,predictions,'r*')
+plt.plot(brand_new_data,predictions,'r')
 plt.show()
