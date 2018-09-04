@@ -210,10 +210,9 @@ census['native_country'] = census['native_country'].astype('category')
 
 census['income_bracket'] = census['income_bracket'].apply(lambda label: int(label ==' >50K'))
 
+# create dummy variables for categorical columns (since the labels are non-numeric)
 final_data = pd.get_dummies(census,columns=['workclass','education','marital_status','occupation','relationship','race','gender',
                                             'native_country'],drop_first=True)
-
-final_data.info()
 
 from sklearn.model_selection import train_test_split
 x_data = final_data.drop('income_bracket',axis=1)
