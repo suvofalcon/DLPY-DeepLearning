@@ -90,7 +90,7 @@ Build the model
 - evaluate the model
 """
 
-input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=10,num_epochs=1000,
+input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=100,num_epochs=1000,
                                                  shuffle=True)
 # we will use a linear Classifier to begin with
 model = tf.estimator.LinearClassifier(feature_columns=feat_cols)
@@ -99,7 +99,7 @@ model = tf.estimator.LinearClassifier(feature_columns=feat_cols)
 model.train(input_fn=input_func,steps=10000)
 
 # build the prediction function
-pred_func = tf.estimator.inputs.pandas_input_fn(x=X_test,batch_size=10,num_epochs=1,shuffle=False)
+pred_func = tf.estimator.inputs.pandas_input_fn(x=X_test,batch_size=100,num_epochs=1,shuffle=False)
 
 # do the predictions
 predictions = list(model.predict(input_fn=pred_func))
@@ -163,7 +163,7 @@ feat_cols = [age,embedded_workclass,embedded_education,education_num,embedded_ma
             ,embedded_race,indicator_gender,capital_gain,capital_loss,hours_per_week,embedded_native_country]
 
 # Build the input function
-input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=10,num_epochs=1000,
+input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=100,num_epochs=1000,
                                                  shuffle=True)
 
 # we will build a densely connected neural networks with a three layers and each having 6 neurons
@@ -173,7 +173,7 @@ dnn_model = tf.estimator.DNNClassifier(hidden_units=[6,6,6],feature_columns=feat
 dnn_model.train(input_fn=input_func,steps=20000)
 
 # build the prediction function
-pred_func = tf.estimator.inputs.pandas_input_fn(x=X_test,batch_size=10,num_epochs=1,shuffle=False)
+pred_func = tf.estimator.inputs.pandas_input_fn(x=X_test,batch_size=100,num_epochs=1,shuffle=False)
 
 # do the predictions
 predictions = list(model.predict(input_fn=pred_func))
