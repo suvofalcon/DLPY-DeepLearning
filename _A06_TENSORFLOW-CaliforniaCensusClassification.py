@@ -189,3 +189,43 @@ print(classification_report(y_test,final_pred))
 print("\n")
 print("Confusion Matrix")
 print(confusion_matrix(y_test,final_pred))
+
+
+'''
+Realtiy check with a random forest classifier
+'''
+
+# read the data
+census = pd.read_csv("/Users/suvosmac/Documents/CodeMagic/DataFiles/Udemy/census_data.csv")
+
+census.columns
+census['workclass'] = census['workclass'].astype('category')
+census['education'] = census['education'].astype('category')
+census['marital_status'] = census['marital_status'].astype('category')
+census['occupation'] = census['occupation'].astype('category')
+census['relationship'] = census['relationship'].astype('category')
+census['race'] = census['race'].astype('category')
+census['gender'] = census['gender'].astype('category')
+census['native_country'] = census['native_country'].astype('category')
+
+census['income_bracket'] = census['income_bracket'].apply(lambda label: int(label ==' >50K'))
+
+final_data = pd.get_dummies(census,columns=['workclass','education','marital_status','occupation','relationship','race','gender',
+                                            'native_country'],drop_first=True)
+
+final_data.info()
+
+from sklearn.model_selection import train_test_split
+x_data = final_data.drop('income_bracket',axis=1)
+y_labels = final_data['income_bracket']
+X_train, X_test, y_train, y_test = train_test_split(x_data,y_labels,test_size=0.3,random_state=101)
+
+from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier(n_estimators=200)
+# Fit the classifier to training data
+rf.fit(X_train,y_train)
+# Run the predictions
+rf_preds = rf.predict(X_test)
+# Classification report and confusion matrix
+print(classification_report(y_test,rf_preds))
+print(confusion_matrix(y_test,rf_preds))
