@@ -12,7 +12,7 @@ This python file shows the basics of tensor flow usage
 import tensorflow as tf
 
 # to check the tensorflow version being used
-print(tf.__version__)
+print("Tensor Flow version is:",tf.__version__)
 
 # constants in tensorflow would be stored in a tensor object
 hello = tf.constant("Hello World!!")
